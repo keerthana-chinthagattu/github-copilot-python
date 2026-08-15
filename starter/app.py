@@ -1,3 +1,5 @@
+# Project: Refactoring Legacy Code with Copilot
+
 from flask import Flask, render_template, jsonify, request
 import sudoku_logic
 
