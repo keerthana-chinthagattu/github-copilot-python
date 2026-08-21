@@ -1,60 +1,103 @@
-# Refactor a Sudoku Game written in Python Flask
+# Sudoku Solver Web Application
 
-Use this simple Sudoku game as a starting point to practice your skills with GitHub Copilot. The goal is to refactor the code to use modern technologies, while also adding new features and improving the overall user experience.
+A web-based Sudoku application built with **Python**, **Flask**, **HTML**, **CSS**, and **JavaScript**. The application generates playable Sudoku puzzles, lets users solve them interactively, and verifies whether the solution is correct.
 
-## Getting Started
+## Project Overview
 
-Follow these instructions to get a copy of the project up and running on your local machine.
+This project demonstrates how a Sudoku puzzle can be generated and solved using a backtracking algorithm. The backend is responsible for creating valid puzzles and checking solutions, while the frontend provides an interactive interface for players.
 
-### Dependencies
+## Features
 
+- Generate a new Sudoku puzzle
+- Interactive 9×9 Sudoku board
+- Validate completed solutions
+- Randomized puzzle generation
+- Responsive browser interface
+
+## Tech Stack
+
+| Technology | Purpose |
+|------------|---------|
+| Python     | Core programming language |
+| Flask      | Backend web framework |
+| JavaScript | Frontend interaction |
+| HTML/CSS   | User interface |
+| GitHub Copilot | Development assistance |
+
+## Project Structure
+
+```text
+starter/
+├── app.py                 # Flask application
+├── sudoku_logic.py        # Puzzle generation and solving logic
+├── templates/
+│   └── index.html
+├── static/
+│   ├── main.js
+│   └── style.css
+└── requirements.txt
 ```
-- Modern web browser (Chrome, Firefox, Edge, etc.)
-- Python 3
-```
 
-### Installation
+## How It Works
 
-1. Fork this repository to your GitHub account. (You can use the "Fork" button on the top right corner of the repository page.)
+1. The Flask server creates a valid Sudoku board.
+2. Numbers are removed to create a playable puzzle.
+3. The puzzle is displayed in the browser.
+4. The player fills the empty cells.
+5. The solution is sent to the backend for validation.
 
-2. Clone your forked repository to your local machine.
+## Installation
 
-3. Open a terminal window and navigate to the "github-copilot-python/starter" directory.
-
-4. Create a Python virtual environment and activate it (optional but highly recommended).
+1. Clone the repository.
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
+git clone <repository-url>
 ```
 
-5. Install required Python packages.
+2. Move into the project folder.
 
 ```bash
-pip install -r requirements.txt
+cd github-copilot-python
 ```
 
-6. Run the Flask app.
+3. Install the required packages.
 
 ```bash
+pip install -r starter/requirements.txt
+```
+
+4. Start the application.
+
+```bash
+cd starter
 python app.py
 ```
 
-7. Open http://127.0.0.1:5000 in your browser.
+5. Open your browser and visit:
 
-## Project Instructions
+```text
+http://localhost:5000
+```
 
-Use GitHub Copilot to refactor the code for this game to add more advanced features. The goal is to create a more modern and maintainable codebase and add additional functionality to the final product. You can use any combination of code completion and chat features, like Ask, Edit, or Agent modes.
+## Learning Outcomes
 
-- Errors should be handled gracefully with appropriate messages to the user.
-- Implement a Sudoku board generator that creates a valid Sudoku puzzle with a unique solution.
-- Add a timer to track how long it takes to solve the puzzle.
-- Implement a solution checker that verifies if the user's solution is correct using event delegation.
-- Add a difficulty selector to allow users to choose between easy, medium, and hard puzzles.
-- Add a hint feature that provides clues for the user that are noted with unique colors.
-- Add a check puzzle button that checks the current state of the board against the solution.
-- User should get immediate feedback on their input, such as highlighting invalid entries.
-- Top 10 scores should be saved in local storage and displayed on the page with the user's name, time taken, hints used, and difficulty level.
-- The game should be responsive and work well on both desktop and mobile devices.
-- UI colors should be visually appealing and accessible.
-- Completed and correct puzzles should display a congratulatory message with the time taken and hints used and ask for the user's name for Top 10 times.
+Through this project I practiced:
+
+- Building REST endpoints with Flask
+- Implementing recursive backtracking algorithms
+- Managing frontend and backend communication
+- Creating an interactive web application
+- Organizing a Python project using Git and GitHub
+
+## Future Improvements
+
+- Multiple difficulty levels
+- Timer and scoring system
+- Hint functionality
+- Save and resume unfinished games
+
+## Author
+
+**Nikhitha Mateti**
+
+Python | Flask | Web Development
