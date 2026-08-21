@@ -1,57 +1,108 @@
-import copy
 import random
+from copy import deepcopy
 
-SIZE = 9
-EMPTY = 0
 
-def deep_copy(board):
-    return copy.deepcopy(board)
+class SudokuEngine:
+    def __init__(self):
+        self.size = 9
+        self.box = 3
 
-def create_empty_board():
-    return [[EMPTY for _ in range(SIZE)] for _ in range(SIZE)]
+    def create_puzzle(self, blanks=40):
+        board = [[0 for _ in range(self.size)] for _ in range(self.size)]
+        self._generate(board)
+        solution = deepcopy(board)
+        self._hide_numbers(board, blanks)
+        return board, solution
 
-def is_safe(board, row, col, num):
-    # Check row and column
-    for x in range(SIZE):
-        if board[row][x] == num or board[x][col] == num:
+    def validate(self, board):
+        copied = deepcopy(board)
+        return self._solve(copied)
+
+    # ---------- Puzzle Generation ----------
+
+    def _generate(self, board):
+        empty = self._next_empty(board)
+        if empty is None:
+            return True
+
+        row, col = empty
+        values = list(range(1, 10))
+        random.shuffle(values)
+
+        for value in values:
+            if self._can_place(board, row, col, value):
+                board[row][col] = value
+                if self._generate(board):
+                    return True
+                board[row][col] = 0
+
+        return False
+
+    # ---------- Sudoku Solver ----------
+
+    def _solve(self, board):
+        position = self._next_empty(board)
+        if position is None:
+            return True
+
+        row, col = position
+
+        for value in range(1, 10):
+            if self._can_place(board, row, col, value):
+                board[row][col] = value
+                if self._solve(board):
+                    return True
+                board[row][col] = 0
+
+        return False
+
+    # ---------- Helpers ----------
+
+    def _next_empty(self, board):
+        for r in range(self.size):
+            for c in range(self.size):
+                if board[r][c] == 0:
+                    return (r, c)
+        return None
+
+    def _can_place(self, board, row, col, value):
+        if value in board[row]:
             return False
-    # Check 3x3 box
-    start_row = row - row % 3
-    start_col = col - col % 3
-    for i in range(3):
-        for j in range(3):
-            if board[start_row + i][start_col + j] == num:
+
+        for r in range(self.size):
+            if board[r][col] == value:
                 return False
-    return True
 
-def fill_board(board):
-    for row in range(SIZE):
-        for col in range(SIZE):
-            if board[row][col] == EMPTY:
-                possible = list(range(1, SIZE + 1))
-                random.shuffle(possible)
-                for candidate in possible:
-                    if is_safe(board, row, col, candidate):
-                        board[row][col] = candidate
-                        if fill_board(board):
-                            return True
-                        board[row][col] = EMPTY
-                return False
-    return True
+        start_row = (row // self.box) * self.box
+        start_col = (col // self.box) * self.box
 
-def remove_cells(board, clues):
-    attempts = SIZE * SIZE - clues
-    while attempts > 0:
-        row = random.randrange(SIZE)
-        col = random.randrange(SIZE)
-        if board[row][col] != EMPTY:
-            board[row][col] = EMPTY
-            attempts -= 1
+        for r in range(start_row, start_row + self.box):
+            for c in range(start_col, start_col + self.box):
+                if board[r][c] == value:
+                    return False
 
-def generate_puzzle(clues=35):
-    board = create_empty_board()
-    fill_board(board)
-    solution = deep_copy(board)
-    remove_cells(board, clues)
-    puzzle = deep_copy(board)
-    return puzzle, solution
+        return True
+
+    def _hide_numbers(self, board, blanks):
+        cells = [(r, c) for r in range(9) for c in range(9)]
+        random.shuffle(cells)
+
+        for row, col in cells[:blanks]:
+            board[row][col] = 0
+
+
+# ---------- Public Functions ----------
+
+engine = SudokuEngine()
+
+
+def generate_sudoku(empty_cells=40):
+    puzzle, solution = engine.create_puzzle(empty_cells)
+    return {
+        "board": puzzle,
+        "solution": solution
+    }
+
+
+def check_solution(board):
+    return engine.validate(board)
